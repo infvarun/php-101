@@ -1,26 +1,15 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
+session_start();
+$server = "localhost";
+$u = "root";
+$p = "";
 $dbname = "myblog";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$dbconn = new mysqli($server, $u, $p, $dbname);
 // Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($dbconn ->connect_error) {
+    die("Connection failed: " . $dbconn->connect_error);
 }
 
-$sql = "SELECT id, username, password, name FROM user";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    // output data of each row
-    while($row = $result->fetch_assoc()) {
-        echo "id: " . $row["id"]. " - Name: " . $row["username"]. " " . $row["password"]. "<br>";
-    }
-} else {
-    echo "0 results";
-}
-$conn->close();
 ?>

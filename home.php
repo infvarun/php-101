@@ -1,13 +1,8 @@
 <?php
-session_start();
+include "connect.php";
 
-$uname = $_POST['username'];
-$pass = $_POST['password'];
-
-if($uname == "john" && $pass == "1234")
+if(isset($_SESSION['isAuthorised']) && $_SESSION['isAuthorised'] == "true")
 {
-  $_SESSION['isAuthorised'] = "true";
-  $_SESSION['username'] = $uname; 
 ?>  
 <!doctype html>
 <html lang="en">
@@ -31,14 +26,17 @@ if($uname == "john" && $pass == "1234")
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="home.php">Home <span class="sr-only">(current)</span></a>
             </li>
             </ul>
-            <span class="navbar-text">
-                <?php
-                    echo $uname;
-                 ?>
-            </span>
+
+            <a class="btn btn-link" href="#">
+                <?php echo $_SESSION['name'];?>
+            </a>
+
+            <a class="btn btn-outline-danger" href="signout.php">
+                Sign out
+            </a>
         </div>
     </nav>
     <br/>
@@ -54,13 +52,10 @@ if($uname == "john" && $pass == "1234")
     </div>
 
 
-
-
-
 <?php
 } else {
     header("Location: index.php");
-    $_SESSION['error'] = "User not valid";
+    $_SESSION['error'] = "You are not authorised";
     $_SESSION['isAuthorised'] = "false";
     unset($_SESSION['username']);
     die();

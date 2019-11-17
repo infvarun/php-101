@@ -1,9 +1,26 @@
 <?php
-session_start();
+include "connect.php";
+
+$title = "";
+$intro = "";
+$article = "";
+$category = "";
+$author = "";
 
 if(isset($_SESSION['isAuthorised']) && $_SESSION['isAuthorised'] == "true")
 {
     $blogid = $_GET['id'];
+    $blog_query = "SELECT * FROM blog WHERE id='$blogid'";
+    $blog_result = mysqli_query($dbconn, $blog_query);
+    $blog_row = mysqli_fetch_assoc($blog_result);
+
+    if ($blog_row) {
+        $title = $blog_row["title"];
+        $intro = $blog_row["intro"];
+        $article = $blog_row["article"];
+        $category = $blog_row["category"];
+        $author = $blog_row["author"];
+    }
 
 ?>
  
@@ -18,6 +35,8 @@ if(isset($_SESSION['isAuthorised']) && $_SESSION['isAuthorised'] == "true")
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+    <link href="css/jumbotron.css" rel="stylesheet">
+
     <title>My Blog</title>
   </head>
   <body>
@@ -30,41 +49,44 @@ if(isset($_SESSION['isAuthorised']) && $_SESSION['isAuthorised'] == "true")
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="home.php">Home <span class="sr-only">(current)</span></a>
             </li>
             </ul>
-            <span class="navbar-text">
-                <?php
-                    echo $_SESSION['username'];
-                 ?>
-            </span>
+            <a class="btn btn-link" href="#">
+                <?php echo $_SESSION['name'];?>
+            </a>
+
+            <a class="btn btn-outline-danger" href="signout.php">
+                Sign out
+            </a>
         </div>
     </nav>
 
-    <br/>
-    <div class="container">
-        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                <img class="d-block w-100" src="img/card1php.png" alt="First slide">
-                </div>
-                <div class="carousel-item">
-                <img class="d-block w-100" src="img/card1php.png" alt="Second slide">
-                </div>
-                <div class="carousel-item">
-                <img class="d-block w-100" src="img/card1php.png" alt="Third slide">
-                </div>
-            </div>
+    <main role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <div class="container">
+          <h1 class="display-3"><?php echo $title; ?></h1>
+          <p><?php echo $intro; ?></p>
         </div>
-        <p>
+      </div>
 
-            What distinguishes PHP from something like client-side JavaScript is that the code is executed on the server, generating HTML which is then sent to the client. The client would receive the results of running that script, but would not know what the underlying code was. You can even configure your web server to process all your HTML files with PHP, and then there's really no way that users can tell what you have up your sleeve.
+      <div class="container">
+        <!-- Article -->
+        <div class="row">
+            <?php echo $article; ?>
+        </div>
 
-            The best things in using PHP are that it is extremely simple for a newcomer, but offers many advanced features for a professional programmer. Don't be afraid reading the long list of PHP's features. You can jump in, in a short time, and start writing simple scripts in a few hours.
+        <hr>
 
-            Although PHP's development is focused on server-side scripting, you can do much more with it. Read on, and see more in the What can PHP do? section, or go right to the introductory tutorial if you are only interested in web programming.
-        </p>
-    </div>
+      </div> <!-- /container -->
+
+    </main>
+
+    <footer class="container">
+      <p>&copy; Varun 2019-2020</p>
+    </footer>
 
 
 
