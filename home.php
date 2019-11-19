@@ -3,6 +3,9 @@ include "connect.php";
 
 if(isset($_SESSION['isAuthorised']) && $_SESSION['isAuthorised'] == "true")
 {
+    $blog_query = "SELECT * FROM blog";
+    $blog_result = mysqli_query($dbconn, $blog_query);
+
 ?>  
 <!doctype html>
 <html lang="en">
@@ -41,14 +44,16 @@ if(isset($_SESSION['isAuthorised']) && $_SESSION['isAuthorised'] == "true")
     </nav>
     <br/>
     <div class="container">
+        <?php while ($row = mysqli_fetch_assoc($blog_result)) { ?>
         <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="img/card1php.png" alt="Card image cap">
+            <img class="card-img-top" src="img/<?php echo $row['imgurl'] ?>" alt="Card image cap">
             <div class="card-body">
-                <h5 class="card-title">PHP Tutorial</h5>
-                <p class="card-text">This is Basic to Advance PHP course, procedural and object oriented concepts are covered.</p>
-                <a href="read.php?id=1" class="btn btn-primary">Read</a>
+                <h5 class="card-title"><?php echo $row['title'] ?></h5>
+                <p class="card-text"><?php echo $row['intro'] ?></p>
+                <a href="read.php?id=<?php echo $row['id'] ?>" class="btn btn-primary">Read</a>
             </div>
         </div>
+        <?php }?>
     </div>
 
 
